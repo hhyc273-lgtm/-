@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#343333">
+  <meta name="description" content="البوابات - دليلك إلى مدينة شهبا">
+  <title>البوابات | دليلك إلى شهبا</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="site-shell">
+
+    <!-- رأس الصفحة -->
+    <header class="hero">
+
+      <div class="hero-top">
+
+        <div class="brand-copy">
+          <span class="eyebrow">مرحباً بك في</span>
+
+          <h1>البوابات</h1>
+
+          <p>دليلك إلى شهبا</p>
+        </div>
+
+        <a class="brand-mark" href="#" aria-label="البوابات">
+          <img src="assets/logo.png" alt="شعار البوابات">
+        </a>
+
+      </div>
+
+      <div class="hero-intro">
+        <span class="intro-line"></span>
+        <p>اكتشف الأماكن والخدمات التي تبحث عنها في مدينتك</p>
+      </div>
+
+      <!-- مربع البحث -->
+
+      <form class="search-box" id="searchForm">
+
+        <button class="search-submit" type="submit" aria-label="بحث">
+          <svg viewBox="0 0 24 24">
+            <circle cx="10.8" cy="10.8" r="6.8"></circle>
+            <path d="m16 16 5 5"></path>
+          </svg>
+        </button>
+
+        <input
+          id="searchInput"
+          type="search"
+          placeholder="ابحث عن محل أو طبيب أو مطعم..."
+          autocomplete="off"
+        >
+
+        <button
+          class="clear-search"
+          id="clearSearch"
+          type="button"
+          hidden
+        >×</button>
+
+      </form>
+
+      <div class="location-note">
+        <span>📍</span>
+        <span>شهبا · محافظة السويداء</span>
+      </div>
+
+    </header>
+        <main>
+
+      <!-- الأقسام الرئيسية -->
+      <section class="section categories-section">
+
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">تصفّح بسهولة</span>
+            <h2>استكشف الأقسام</h2>
+          </div>
+
+          <span class="heading-decoration"></span>
+        </div>
+
+        <div class="category-grid" id="categoryGrid">
+
+          <button class="category-card" data-category="all" type="button">
+            <span class="category-icon">▦</span>
+            <span>كل الأقسام</span>
+          </button>
+
+          <button class="category-card" data-category="gold" type="button">
+            <span class="category-icon">◇</span>
+            <span>الصاغة</span>
+          </button>
+
+          <button class="category-card" data-category="food" type="button">
+            <span class="category-icon">♨</span>
+            <span>المطاعم</span>
+          </button>
+
+          <button class="category-card" data-category="cafes" type="button">
+            <span class="category-icon">☕</span>
+            <span>المقاهي</span>
+          </button>
+
+          <button class="category-card" data-category="health" type="button">
+            <span class="category-icon">✚</span>
+            <span>العيادات والصحة</span>
+          </button>
+
+          <button class="category-card" data-category="shopping" type="button">
+            <span class="category-icon">▱</span>
+            <span>التسوق</span>
+          </button>
+
+          <button class="category-card" data-category="beauty" type="button">
+            <span class="category-icon">✦</span>
+            <span>الجمال والعناية</span>
+          </button>
+
+          <button class="category-card" data-category="services" type="button">
+            <span class="category-icon">⚙</span>
+            <span>الخدمات</span>
+          </button>
+
+          <button class="category-card" data-category="other" type="button">
+            <span class="category-icon">⌂</span>
+            <span>أقسام أخرى</span>
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- الأماكن المميزة -->
+      <section class="section featured-section">
+
+        <div class="section-heading featured-heading">
+
+          <div>
+            <span class="section-kicker">أماكن تستحق الاكتشاف</span>
+            <h2 id="featuredTitle">أماكن مميزة</h2>
+          </div>
+
+          <button class="text-button" id="showAll" type="button">
+            عرض الكل ←
+          </button>
+
+        </div>
+
+        <div class="results-meta" id="resultsMeta">
+          ستضاف بيانات الأماكن بعد جمعها والتحقق منها.
+        </div>
+
+        <div class="places-grid" id="placesGrid"></div>
+
+        <div class="empty-state" id="emptyState" hidden>
+
+          <span class="empty-icon">⌕</span>
+
+          <h3>لم نعثر على نتائج</h3>
+
+          <p>جرّب كلمة بحث أخرى أو اختر قسماً مختلفاً.</p>
+
+          <button class="outline-button" id="resetFilters" type="button">
+            عرض جميع الأقسام
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- اقتراح إضافة مكان -->
+      <section class="suggest-banner">
+
+        <div class="suggest-symbol">＋</div>
+
+        <div>
+          <h2>هل تعرف مكاناً يستحق الإضافة؟</h2>
+          <p>ساعدنا على جعل دليل شهبا أكثر اكتمالاً.</p>
+        </div>
+
+        <a href="mailto:hello@example.com" class="suggest-link">
+          اقترح مكاناً ←
+        </a>
+
+      </section>
+
+    </main>
+
+
+    <!-- تذييل الموقع -->
+    <footer class="footer">
+
+      <div class="footer-brand">
+
+        <img src="assets/logo.png" alt="">
+
+        <strong>البوابات</strong>
+
+      </div>
+
+      <p>دليلك إلى شهبا</p>
+
+      <span>
+        © <span id="year"></span> البوابات. جميع الحقوق محفوظة.
+      </span>
+
+    </footer>
+
+  </div>
+
+
+  <!-- نافذة تفاصيل المكان -->
+  <dialog class="place-dialog" id="placeDialog">
+
+    <button class="dialog-close" id="dialogClose" aria-label="إغلاق">
+      ×
+    </button>
+
+    <div class="dialog-content" id="dialogContent"></div>
+
+  </dialog>
+
+
+  <!-- ملف وظائف الموقع -->
+  <script src="app.js"></script>
+
+</body>
+</html>
