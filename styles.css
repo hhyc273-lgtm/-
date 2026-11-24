@@ -157,3 +157,258 @@ main { padding: 40px 0 20px; }
   .dialog-close { background:#3c3a34; color:#eee8dc; }
 }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; transition:none !important; } }
+
+/* =================================
+   نافذة تفاصيل الأماكن - البوابات
+================================= */
+
+.place-dialog {
+  width: min(760px, calc(100% - 24px));
+  max-width: 760px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  margin: auto;
+  border: 1px solid var(--gold-light);
+  border-radius: 24px;
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 25px 90px rgba(0, 0, 0, .28);
+}
+
+.place-dialog::backdrop {
+  background: rgba(25, 24, 22, .72);
+  backdrop-filter: blur(5px);
+}
+
+.dialog-content {
+  padding: 36px;
+}
+
+.dialog-close {
+  position: sticky;
+  top: 12px;
+  float: left;
+  z-index: 5;
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--paper-deep);
+  color: var(--ink);
+  font-size: 1.7rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.detail-header {
+  text-align: center;
+  padding: 15px 10px 30px;
+  border-bottom: 1px solid var(--line);
+}
+
+.detail-logo {
+  width: 94px;
+  height: 94px;
+  margin: 0 auto 17px;
+  display: grid;
+  place-items: center;
+  border-radius: 25px;
+  background: linear-gradient(145deg, #f2eadb, #e7dbc5);
+  color: #92764c;
+  font-size: 3.2rem;
+  border: 1px solid var(--gold-light);
+}
+
+.detail-header .dialog-tag {
+  margin-bottom: 10px;
+}
+
+.detail-header h2 {
+  margin: 8px 0;
+  color: var(--ink);
+  font-size: clamp(1.6rem, 5vw, 2.2rem);
+  font-weight: 800;
+}
+
+.detail-description {
+  max-width: 500px;
+  margin: 8px auto 0;
+  color: var(--muted);
+  font-size: .98rem;
+}
+
+.detail-information {
+  padding: 27px 0;
+}
+
+.detail-information h3 {
+  margin: 0 0 20px;
+  font-size: 1.2rem;
+  color: var(--ink);
+}
+
+.detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  padding: 17px;
+  margin-bottom: 12px;
+  border: 1px solid var(--line);
+  border-radius: 15px;
+  background: var(--paper);
+}
+
+.detail-item-icon {
+  width: 43px;
+  height: 43px;
+  flex: 0 0 43px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: #eee6d8;
+  color: #92764c;
+  font-size: 1.5rem;
+}
+
+.detail-item strong {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--ink);
+  font-size: .9rem;
+}
+
+.detail-item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: .9rem;
+  overflow-wrap: anywhere;
+}
+
+.detail-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding-top: 5px;
+}
+
+.detail-actions a {
+  flex: 1;
+  min-width: 180px;
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 12px 18px;
+  border-radius: 13px;
+  text-decoration: none;
+  font-weight: 800;
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+.detail-actions a:hover {
+  transform: translateY(-2px);
+  opacity: .9;
+}
+
+.detail-call-button {
+  background: var(--green);
+  color: #fff;
+}
+
+.detail-whatsapp-button {
+  background: #218653;
+  color: #fff;
+}
+
+.detail-footer-note {
+  margin-top: 28px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+  text-align: center;
+  color: var(--muted);
+  font-size: .78rem;
+}
+
+/* الوضع الداكن */
+
+@media (prefers-color-scheme: dark) {
+  .place-dialog {
+    background: #292b28;
+    color: #eee9df;
+    border-color: #625640;
+  }
+
+  .detail-header h2,
+  .detail-information h3,
+  .detail-item strong {
+    color: #eee9df;
+  }
+
+  .detail-logo {
+    background: #39372f;
+    color: #d8c6a5;
+    border-color: #5d523f;
+  }
+
+  .detail-item {
+    background: #222420;
+    border-color: #414039;
+  }
+
+  .detail-item-icon {
+    background: #39372f;
+    color: #d8c6a5;
+  }
+
+  .detail-header,
+  .detail-footer-note {
+    border-color: #414039;
+  }
+
+  .dialog-close {
+    background: #39372f;
+    color: #eee9df;
+    border-color: #514b40;
+  }
+}
+
+/* الهواتف */
+
+@media (max-width: 600px) {
+  .place-dialog {
+    width: calc(100% - 16px);
+    max-height: 94vh;
+    border-radius: 19px;
+  }
+
+  .dialog-content {
+    padding: 22px 17px;
+  }
+
+  .detail-header {
+    padding: 12px 5px 23px;
+  }
+
+  .detail-logo {
+    width: 78px;
+    height: 78px;
+    font-size: 2.7rem;
+  }
+
+  .detail-item {
+    padding: 13px;
+    gap: 11px;
+  }
+
+  .detail-actions {
+    flex-direction: column;
+  }
+
+  .detail-actions a {
+    width: 100%;
+    min-width: 0;
+  }
+}
