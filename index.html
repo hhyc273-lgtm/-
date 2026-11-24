@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#343333">
+  <meta name="description" content="البوابات — دليلك إلى مدينة شهبا. اكتشف المحلات والخدمات والأماكن المهمة في المدينة.">
+  <title>البوابات | دليلك إلى شهبا</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="hero">
+      <div class="hero-top">
+        <div class="brand-copy">
+          <span class="eyebrow">مرحباً بك في</span>
+          <h1>البوابات</h1>
+          <p>دليلك إلى شهبا</p>
+        </div>
+        <a class="brand-mark" href="#" aria-label="البوابات - الصفحة الرئيسية">
+          <img src="assets/logo.png" alt="شعار البوابات">
+        </a>
+      </div>
+      <div class="hero-intro">
+        <span class="intro-line"></span>
+        <p>اكتشف الأماكن والخدمات التي تبحث عنها في مدينتك</p>
+      </div>
+      <form class="search-box" id="searchForm" role="search">
+        <button class="search-submit" type="submit" aria-label="بحث">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+        </button>
+        <input id="searchInput" type="search" placeholder="ابحث عن محل أو طبيب أو مطعم..." autocomplete="off" aria-label="ابحث عن مكان أو خدمة">
+        <button class="clear-search" id="clearSearch" type="button" aria-label="مسح البحث" hidden>×</button>
+      </form>
+      <div class="location-note">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+        <span>شهبا · محافظة السويداء</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="section categories-section" aria-labelledby="categoriesTitle">
+        <div class="section-heading">
+          <div>
+            <span class="section-kicker">تصفّح بسهولة</span>
+            <h2 id="categoriesTitle">استكشف الأقسام</h2>
+          </div>
+          <span class="heading-decoration" aria-hidden="true"></span>
+        </div>
+        <div class="category-grid" id="categoryGrid">
+          <button class="category-card" data-category="all" type="button">
+            <span class="category-icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"></rect><rect x="14" y="4" width="6" height="6" rx="1"></rect><rect x="4" y="14" width="6" height="6" rx="1"></rect><rect x="14" y="14" width="6" height="6" rx="1"></rect></svg></span><span>كل الأقسام</span>
+          </button>
+          <button class="category-card" data-category="gold" type="button"><span class="category-icon"><svg viewBox="0 0 24 24"><path d="m12 3 8 7-8 11L4 10l8-7Z"></path><path d="m4 10 16 0M8 10l4 11 4-11M8 6l4 4 4-4"></path></svg></span><span>الصاغة</span></button>
+          <button class="category-card" data-category="food" type="button"><span class="category-icon"><svg viewBox="0 0 24 24"><path d="M4 3v7a3 3 0 0 0 6 0V3M7 3v18M17 3v18M17 3c3 2 3 7 0 9"></path></svg></span><span>المطاعم</span></button>
+          <button class="category-card" data-category="cafes" type="button"><span class="category-icon"><svg viewBox="0 0 24 24"><path d="M4 8h13v7a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8ZM17 10h2a2 2 0 0 1 0 4h-2M7 4c-1 1 1 2 0 3M12 4c-1 1 1 2 0 3"></path></svg></span><span>المقاهي</span></button>
+          <button class="category-card" data-category="health" type="button"><span class="category-icon"><svg viewBox="0 0 24 24"><path d="M9 3h6v5h5v6h-5v5H9v-5H4V8h5V3Z"></path></svg></span><span>العيادات والصحة</span></button>
+          <button class="category-card" data-category="shopping" type="button"><span class="category-icon"><svg viewBox="0 0 24 24"><path d="M4 8h16l-1 13H5L4 8ZM8 8a4 4 0 0 1 8 0"></path></svg></span><span>التسوق</span></button>
+          <button class="category-card" data-category="beauty" type="button"><span class="category-icon"><svg viewBox="0 0 24 24"><path d="M12 3c-2 4-7 7-7 12a7 7 0 0 0 14 0c0-5-5-8-7-12Z"></path><path d="M9 16c.5 1.5 1.5 2 3 2"></path></svg></span><span>الجمال والعناية</span></button>
+          <button class="category-card" data-category="services" type="button"><span class="category-icon"><svg viewBox="0 0 24 24"><path d="M14 6a5 5 0 0 0-6 6L3 17l4 4 5-5a5 5 0 0 0 6-6l-3 3-4-4 3-3Z"></path></svg></span><span>الخدمات</span></button>
+          <button class="category-card" data-category="other" type="button"><span class="category-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg></span><span>أقسام أخرى</span></button>
+        </div>
+      </section>
+
+      <section class="section featured-section" aria-labelledby="featuredTitle">
+        <div class="section-heading featured-heading">
+          <div>
+            <span class="section-kicker">أماكن تستحق الاكتشاف</span>
+            <h2 id="featuredTitle">أماكن مميزة</h2>
+          </div>
+          <button class="text-button" id="showAll" type="button">عرض الكل <span>←</span></button>
+        </div>
+        <div class="results-meta" id="resultsMeta">هذه واجهة تجريبية أولية — ستضاف بيانات الأماكن بعد جمعها والتحقق منها.</div>
+        <div class="places-grid" id="placesGrid"></div>
+        <div class="empty-state" id="emptyState" hidden>
+          <span class="empty-icon">⌕</span>
+          <h3>لم نعثر على نتائج</h3>
+          <p>جرّب كلمة بحث أخرى أو اختر قسماً مختلفاً.</p>
+          <button class="outline-button" id="resetFilters" type="button">عرض جميع الأقسام</button>
+        </div>
+      </section>
+
+      <section class="suggest-banner">
+        <div class="suggest-symbol" aria-hidden="true">＋</div>
+        <div>
+          <h2>هل تعرف مكاناً يستحق الإضافة؟</h2>
+          <p>ساعدنا على جعل دليل شهبا أكثر اكتمالاً.</p>
+        </div>
+        <a href="mailto:?subject=%D8%A7%D9%82%D8%AA%D8%B1%D8%A7%D8%AD%20%D8%A5%D8%B6%D8%A7%D9%81%D8%A9%20%D9%85%D9%83%D8%A7%D9%86" class="suggest-link">اقترح مكاناً <span>←</span></a>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-brand"><img src="assets/logo.png" alt=""><strong>البوابات</strong></div>
+      <p>دليلك إلى شهبا</p>
+      <span>© <span id="year"></span> البوابات. جميع الحقوق محفوظة.</span>
+    </footer>
+  </div>
+
+  <dialog class="place-dialog" id="placeDialog" aria-label="تفاصيل المكان">
+    <button class="dialog-close" id="dialogClose" type="button" aria-label="إغلاق النافذة">×</button>
+    <div class="dialog-content" id="dialogContent"></div>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
