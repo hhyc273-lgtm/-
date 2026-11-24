@@ -1,4 +1,3 @@
-
 const categories = {
   all: "كل الأقسام",
   gold: "الصاغة",
