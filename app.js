@@ -1,6 +1,7 @@
+
 /* ==========================================
-   البوابات - دليلك في شهبا
-   نظام الأماكن وصفحات التفاصيل
+   البوابات - دليل مدينة شهبا
+   نظام الأماكن والنافذة المنبثقة
 ========================================== */
 
 const categories = {
@@ -15,7 +16,7 @@ const categories = {
   other: "أقسام أخرى"
 };
 
-// بيانات الأماكن التجريبية
+// بيانات الأماكن
 const places = [
   {
     id: 1,
@@ -201,50 +202,41 @@ const places = [
   }
 ];
 
+// عناصر النافذة المنبثقة
+const placeDialog = document.getElementById("placeDialog");
+const dialogClose = document.getElementById("dialogClose");
+const dialogContent = document.getElementById("dialogContent");
+
 // عناصر الصفحة الرئيسية
-const homeView = document.getElementById("homeView");
-const detailView = document.getElementById("detailView");
-const detailPageContent =
-  document.getElementById("detailPageContent");
+const searchInput = document.getElementById("searchInput");
+const searchForm = document.getElementById("searchForm");
+const clearSearch = document.getElementById("clearSearch");
+const categoryGrid = document.getElementById("categoryGrid");
+const placesGrid = document.getElementById("placesGrid");
+const emptyState = document.getElementById("emptyState");
+const resultsMeta = document.getElementById("resultsMeta");
 
-const backToDirectory =
-  document.getElementById("backToDirectory");
-
-const detailHomeLink =
-  document.getElementById("detailHomeLink");
-
-const searchInput =
-  document.getElementById("searchInput");
-
-const searchForm =
-  document.getElementById("searchForm");
-
-const clearSearch =
-  document.getElementById("clearSearch");
-
-const categoryGrid =
-  document.getElementById("categoryGrid");
-
-const placesGrid =
-  document.getElementById("placesGrid");
-
-const emptyState =
-  document.getElementById("emptyState");
-
-const resultsMeta =
-  document.getElementById("resultsMeta");
-
+// القسم المحدد حالياً
 let selectedCategory = "all";
 
-let favorites = new Set(
-  JSON.parse(
+// تحميل المفضلة
+let favorites = new Set();
+
+try {
+  const savedFavorites = JSON.parse(
     localStorage.getItem("bawabat-favorites") || "[]"
-  )
-);
+  );
+
+  if (Array.isArray(savedFavorites)) {
+    favorites = new Set(savedFavorites);
+  }
+} catch (error) {
+  favorites = new Set();
+}
 
 // أيقونات الأقسام
 function iconFor(category) {
-  return {
+  const icons = {
     gold: "◇",
     food: "♨",
     cafes: "☕",
@@ -253,18 +245,24 @@ function iconFor(category) {
     beauty: "✦",
     services: "⚙",
     other: "⌂"
-  }[category] || "⌂";
+  };
+
+  return icons[category] || "⌂";
 }
 
 // حماية النصوص عند عرضها
 function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  }[char]));
+  return String(value ?? "").replace(/[&<>"']/g, char => {
+    const entities = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    };
+
+    return entities[char];
+  });
 }
 
 // توحيد الكتابة العربية للبحث
@@ -280,7 +278,7 @@ function normalizeArabic(value) {
 
 // تصفية الأماكن
 function getFilteredPlaces() {
-  const term = normalizeArabic(searchInput.value);
+  const term = normalizeArabic(searchInput?.value || "");
 
   return places.filter(place => {
     const categoryMatch =
@@ -301,14 +299,20 @@ function getFilteredPlaces() {
 
 // عرض بطاقات الأماكن
 function renderPlaces() {
+  if (!placesGrid) return;
+
   const filtered = getFilteredPlaces();
 
   placesGrid.innerHTML = "";
 
-  emptyState.hidden = filtered.length > 0;
+  if (emptyState) {
+    emptyState.hidden = filtered.length > 0;
+  }
 
-  resultsMeta.textContent =
-    `نعرض ${filtered.length} من ${places.length} مكاناً`;
+  if (resultsMeta) {
+    resultsMeta.textContent =
+      `نعرض ${filtered.length} من ${places.length} مكاناً`;
+  }
 
   filtered.forEach(place => {
     const card = document.createElement("article");
@@ -341,7 +345,7 @@ function renderPlaces() {
         <button
           class="favorite-button ${favorites.has(place.id) ? "saved" : ""}"
           type="button"
-          aria-label="إضافة إلى المفضلة"
+          aria-label="${favorites.has(place.id) ? "إزالة من المفضلة" : "إضافة إلى المفضلة"}"
         >
           ${favorites.has(place.id) ? "♥" : "♡"}
         </button>
@@ -379,10 +383,12 @@ function toggleFavorite(id) {
 }
 
 // ==========================================
-// صفحة تفاصيل المكان
+// تفاصيل المكان داخل النافذة المنبثقة
 // ==========================================
 
 function renderPlaceDetails(place) {
+  if (!place || !dialogContent) return;
+
   const phone = place.phone || "";
   const whatsapp = place.whatsapp || "";
 
@@ -394,7 +400,7 @@ function renderPlaceDetails(place) {
     ? `https://wa.me/${encodeURIComponent(whatsapp)}`
     : "";
 
-  detailPageContent.innerHTML = `
+  dialogContent.innerHTML = `
     <section class="detail-hero">
 
       <div class="detail-hero-logo">
@@ -534,7 +540,9 @@ function renderPlaceDetails(place) {
         class="detail-favorite-button ${favorites.has(place.id) ? "saved" : ""}"
         id="detailFavoriteButton"
       >
-        ${favorites.has(place.id) ? "♥ إزالة من المفضلة" : "♡ إضافة إلى المفضلة"}
+        ${favorites.has(place.id)
+          ? "♥ إزالة من المفضلة"
+          : "♡ إضافة إلى المفضلة"}
       </button>
 
     </section>
@@ -543,195 +551,185 @@ function renderPlaceDetails(place) {
   const favoriteButton =
     document.getElementById("detailFavoriteButton");
 
-  favoriteButton.addEventListener("click", () => {
-    toggleFavorite(place.id);
-    renderPlaceDetails(place);
-    renderPlaces();
-  });
+  if (favoriteButton) {
+    favoriteButton.addEventListener("click", () => {
+      toggleFavorite(place.id);
+      renderPlaceDetails(place);
+      renderPlaces();
+    });
+  }
 }
 
-// فتح صفحة تفاصيل المكان
+// فتح تفاصيل المكان
 function openPlace(place) {
-  if (!place) return;
-
-  const nextURL = new URL(window.location.href);
-  nextURL.searchParams.set("place", place.id);
-
-  history.pushState(
-    { placeId: place.id },
-    "",
-    nextURL
-  );
-
-  showPlacePage(place);
-}
-
-// إظهار صفحة التفاصيل
-function showPlacePage(place) {
-  homeView.hidden = true;
-  detailView.hidden = false;
+  if (!place || !placeDialog) return;
 
   renderPlaceDetails(place);
 
-  document.title = `${place.name} | البوابات`;
-
-  window.scrollTo({
-    top: 0,
-    behavior: "instant"
-  });
-}
-
-// العودة إلى الدليل
-function goToDirectory() {
-  if (history.state && history.state.placeId) {
-    history.back();
-    return;
+  if (!placeDialog.open) {
+    placeDialog.showModal();
   }
 
-  const cleanURL = new URL(window.location.href);
-  cleanURL.searchParams.delete("place");
-
-  history.replaceState({}, "", cleanURL);
-
-  showHomePage();
+  // إعادة موضع التمرير إلى أعلى النافذة
+  placeDialog.scrollTop = 0;
 }
 
-// إظهار الصفحة الرئيسية
-function showHomePage() {
-  detailView.hidden = true;
-  homeView.hidden = false;
-
-  document.title = "البوابات | دليلك إلى شهبا";
-
-  window.scrollTo({
-    top: 0,
-    behavior: "instant"
+// إغلاق النافذة بزر الإغلاق
+if (dialogClose && placeDialog) {
+  dialogClose.addEventListener("click", () => {
+    placeDialog.close();
   });
 }
 
-// التعامل مع زر الرجوع في المتصفح
-window.addEventListener("popstate", () => {
-  const params = new URLSearchParams(window.location.search);
-  const placeId = Number(params.get("place"));
-
-  if (placeId) {
-    const place = places.find(item => item.id === placeId);
-
-    if (place) {
-      showPlacePage(place);
-      return;
+// إغلاق النافذة عند الضغط خارج محتواها
+if (placeDialog) {
+  placeDialog.addEventListener("click", event => {
+    if (event.target === placeDialog) {
+      placeDialog.close();
     }
-  }
+  });
 
-  showHomePage();
-});
-
-// فتح صفحة التفاصيل عند تحديث الموقع إذا كان الرابط يحتوي على رقم محل
-function loadInitialPage() {
-  const params = new URLSearchParams(window.location.search);
-  const placeId = Number(params.get("place"));
-
-  if (!placeId) return;
-
-  const place = places.find(item => item.id === placeId);
-
-  if (place) {
-    history.replaceState(
-      { placeId: place.id },
-      "",
-      window.location.href
-    );
-
-    showPlacePage(place);
-  } else {
-    const cleanURL = new URL(window.location.href);
-    cleanURL.searchParams.delete("place");
-    history.replaceState({}, "", cleanURL);
-  }
+  // مسح محتوى المكان بعد الإغلاق
+  placeDialog.addEventListener("close", () => {
+    dialogContent.innerHTML = "";
+  });
 }
 
 // ==========================================
 // البحث والتصنيفات
 // ==========================================
 
-categoryGrid.addEventListener("click", event => {
-  const button = event.target.closest("[data-category]");
+// اختيار التصنيف
+if (categoryGrid) {
+  categoryGrid.addEventListener("click", event => {
+    const button = event.target.closest("[data-category]");
 
-  if (!button) return;
+    if (!button) return;
 
-  selectedCategory = button.dataset.category;
+    selectedCategory = button.dataset.category;
 
-  categoryGrid.querySelectorAll(".category-card")
-    .forEach(card => {
-      card.classList.toggle("active", card === button);
-    });
+    categoryGrid.querySelectorAll(".category-card")
+      .forEach(card => {
+        card.classList.toggle("active", card === button);
+      });
 
-  renderPlaces();
+    renderPlaces();
 
-  document.getElementById("featuredTitle").textContent =
-    selectedCategory === "all"
-      ? "أماكن مميزة"
-      : categories[selectedCategory];
-});
+    const featuredTitle =
+      document.getElementById("featuredTitle");
 
-searchInput.addEventListener("input", () => {
-  clearSearch.hidden = !searchInput.value;
-  renderPlaces();
-});
+    if (featuredTitle) {
+      featuredTitle.textContent =
+        selectedCategory === "all"
+          ? "أماكن مميزة"
+          : categories[selectedCategory] || "أماكن مميزة";
+    }
+  });
+}
 
-searchForm.addEventListener("submit", event => {
-  event.preventDefault();
-  renderPlaces();
-});
+// البحث المباشر
+if (searchInput) {
+  searchInput.addEventListener("input", () => {
+    if (clearSearch) {
+      clearSearch.hidden = !searchInput.value;
+    }
 
-clearSearch.addEventListener("click", () => {
-  searchInput.value = "";
-  clearSearch.hidden = true;
-  renderPlaces();
-  searchInput.focus();
-});
+    renderPlaces();
+  });
+}
 
-// عرض جميع الأماكن
+// تنفيذ البحث
+if (searchForm) {
+  searchForm.addEventListener("submit", event => {
+    event.preventDefault();
+    renderPlaces();
+  });
+}
+
+// مسح البحث
+if (clearSearch) {
+  clearSearch.addEventListener("click", () => {
+    if (searchInput) {
+      searchInput.value = "";
+    }
+
+    clearSearch.hidden = true;
+    renderPlaces();
+
+    if (searchInput) {
+      searchInput.focus();
+    }
+  });
+}
+
+// ==========================================
+// إعادة ضبط التصنيفات والبحث
+// ==========================================
+
 function resetDirectoryFilters() {
   selectedCategory = "all";
-  searchInput.value = "";
-  clearSearch.hidden = true;
 
-  categoryGrid.querySelectorAll(".category-card")
-    .forEach(card => {
-      card.classList.toggle(
-        "active",
-        card.dataset.category === "all"
-      );
-    });
+  if (searchInput) {
+    searchInput.value = "";
+  }
 
-  document.getElementById("featuredTitle").textContent =
-    "أماكن مميزة";
+  if (clearSearch) {
+    clearSearch.hidden = true;
+  }
+
+  if (categoryGrid) {
+    categoryGrid.querySelectorAll(".category-card")
+      .forEach(card => {
+        card.classList.toggle(
+          "active",
+          card.dataset.category === "all"
+        );
+      });
+  }
+
+  const featuredTitle =
+    document.getElementById("featuredTitle");
+
+  if (featuredTitle) {
+    featuredTitle.textContent = "أماكن مميزة";
+  }
 
   renderPlaces();
 }
 
-document.getElementById("showAll")
-  .addEventListener("click", resetDirectoryFilters);
+// زر عرض جميع الأماكن
+const showAllButton = document.getElementById("showAll");
 
-document.getElementById("resetFilters")
-  .addEventListener("click", resetDirectoryFilters);
+if (showAllButton) {
+  showAllButton.addEventListener(
+    "click",
+    resetDirectoryFilters
+  );
+}
 
-// أزرار العودة
-backToDirectory.addEventListener("click", goToDirectory);
+// زر إعادة ضبط البحث والتصنيفات
+const resetFiltersButton =
+  document.getElementById("resetFilters");
 
-detailHomeLink.addEventListener("click", event => {
-  event.preventDefault();
-  goToDirectory();
-});
+if (resetFiltersButton) {
+  resetFiltersButton.addEventListener(
+    "click",
+    resetDirectoryFilters
+  );
+}
 
+// ==========================================
 // تحديث السنة
-document.getElementById("year").textContent =
-  new Date().getFullYear();
+// ==========================================
 
-document.getElementById("detailYear").textContent =
-  new Date().getFullYear();
+const yearElement = document.getElementById("year");
 
+if (yearElement) {
+  yearElement.textContent = new Date().getFullYear();
+}
+
+// ==========================================
 // تشغيل الموقع
+// ==========================================
+
 renderPlaces();
-loadInitialPage();
