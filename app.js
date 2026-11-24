@@ -1,3 +1,4 @@
+
 const categories = {
   all: "كل الأقسام",
   gold: "الصاغة",
@@ -10,17 +11,18 @@ const categories = {
   other: "أقسام أخرى"
 };
 
-// أسماء وبيانات وهمية للاختبار فقط
+// بيانات تجريبية للاختبار
 const places = [
-  // الصاغة
   {
     id: 1,
     name: "لمعة الذهب",
     category: "gold",
     categoryLabel: "الصاغة",
     logo: "◇",
-    description: "متجر تجريبي للمجوهرات والذهب.",
-    address: "عنوان وهمي - شهبا"
+    description: "متجر للمجوهرات والذهب.",
+    address: "الساحة العامة مقابل مطعم تشرين",
+    phone: "0933169773",
+    whatsapp: "963933169773"
   },
   {
     id: 2,
@@ -31,8 +33,6 @@ const places = [
     description: "محل تجريبي للمصوغات الذهبية.",
     address: "عنوان وهمي - شهبا"
   },
-
-  // المطاعم
   {
     id: 3,
     name: "مذاق الدار",
@@ -69,8 +69,6 @@ const places = [
     description: "مطعم تجريبي للبيتزا والوجبات السريعة.",
     address: "عنوان وهمي - شهبا"
   },
-
-  // المقاهي
   {
     id: 7,
     name: "قهوة الحجر",
@@ -98,8 +96,6 @@ const places = [
     description: "مقهى تجريبي للقاء الأصدقاء.",
     address: "عنوان وهمي - شهبا"
   },
-
-  // العيادات والصحة
   {
     id: 10,
     name: "عيادة الشفاء",
@@ -127,8 +123,6 @@ const places = [
     description: "صيدلية تجريبية.",
     address: "عنوان وهمي - شهبا"
   },
-
-  // التسوق
   {
     id: 13,
     name: "أناقة المدينة",
@@ -147,8 +141,6 @@ const places = [
     description: "متجر تجريبي للهدايا والإكسسوارات.",
     address: "عنوان وهمي - شهبا"
   },
-
-  // الجمال والعناية
   {
     id: 15,
     name: "لمسة جمال",
@@ -167,8 +159,6 @@ const places = [
     description: "متجر تجريبي لمستلزمات العناية.",
     address: "عنوان وهمي - شهبا"
   },
-
-  // الخدمات
   {
     id: 17,
     name: "مركز التقنية",
@@ -187,8 +177,6 @@ const places = [
     description: "مكتب خدمات تجريبي.",
     address: "عنوان وهمي - شهبا"
   },
-
-  // أقسام أخرى
   {
     id: 19,
     name: "مكتبة المعرفة",
@@ -237,12 +225,22 @@ const iconFor = (category) => ({
 }[category] || "⌂");
 
 function normalizeArabic(value) {
-  return value.toLowerCase()
+  return String(value ?? "").toLowerCase()
     .replace(/[أإآ]/g, "ا")
     .replace(/ى/g, "ي")
     .replace(/[ًٌٍَُِّْـ]/g, "")
     .replace(/\s+/g, " ")
     .trim();
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[char]));
 }
 
 function getFilteredPlaces() {
@@ -321,16 +319,6 @@ function renderPlaces() {
   });
 }
 
-function escapeHTML(value) {
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;"
-  }[char]));
-}
-
 function toggleFavorite(id) {
   favorites.has(id)
     ? favorites.delete(id)
@@ -343,21 +331,83 @@ function toggleFavorite(id) {
 }
 
 function openPlace(place) {
+  const phone = place.phone || "";
+  const whatsapp = place.whatsapp || "";
+  const hasPhone = Boolean(phone);
+  const hasWhatsapp = Boolean(whatsapp);
+
   dialogContent.innerHTML = `
-    <span class="dialog-tag">
-      ${escapeHTML(place.categoryLabel)}
-    </span>
+    <div class="detail-header">
+      <div class="detail-logo">
+        ${escapeHTML(place.logo || iconFor(place.category))}
+      </div>
 
-    <h2>${escapeHTML(place.name)}</h2>
+      <span class="dialog-tag">
+        ${escapeHTML(place.categoryLabel)}
+      </span>
 
-    <p>
-      ${escapeHTML(place.description || "سيتم إضافة تفاصيل هذا المكان بعد التحقق من معلوماته.")}
-    </p>
+      <h2>${escapeHTML(place.name)}</h2>
 
-    <div class="dialog-note">
-      العنوان: ${escapeHTML(place.address || "سيضاف لاحقاً")}
-      <br>
-      رقم الهاتف: ${escapeHTML(place.phone || "غير متوفر حالياً")}
+      <p class="detail-description">
+        ${escapeHTML(
+          place.description ||
+          "سيتم إضافة تفاصيل هذا المكان بعد التحقق من معلوماته."
+        )}
+      </p>
+    </div>
+
+    <div class="detail-information">
+      <h3>معلومات المكان</h3>
+
+      <div class="detail-item">
+        <span class="detail-item-icon">⌖</span>
+        <div>
+          <strong>العنوان</strong>
+          <p>${escapeHTML(place.address || "سيضاف لاحقاً")}</p>
+        </div>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-item-icon">☎</span>
+        <div>
+          <strong>رقم الهاتف</strong>
+          <p>${hasPhone ? escapeHTML(phone) : "غير متوفر حالياً"}</p>
+        </div>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-item-icon">◷</span>
+        <div>
+          <strong>أوقات العمل</strong>
+          <p>سيتم إضافتها لاحقاً</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-actions">
+      ${
+        hasPhone
+          ? `<a class="detail-call-button"
+               href="tel:${escapeHTML(phone)}">
+               ☎ اتصال هاتفي
+             </a>`
+          : ""
+      }
+
+      ${
+        hasWhatsapp
+          ? `<a class="detail-whatsapp-button"
+               href="https://wa.me/${encodeURIComponent(whatsapp)}"
+               target="_blank"
+               rel="noopener noreferrer">
+               ◉ تواصل عبر واتساب
+             </a>`
+          : ""
+      }
+    </div>
+
+    <div class="detail-footer-note">
+      البوابات · دليل مدينة شهبا
     </div>
   `;
 
