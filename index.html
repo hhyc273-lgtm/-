@@ -9,6 +9,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="styles.css">
@@ -16,7 +17,8 @@
 
 <body>
 
-  <div class="site-shell">
+  <!-- الصفحة الرئيسية -->
+  <div class="site-shell" id="homeView">
 
     <!-- الرأس الرئيسي -->
     <header class="hero">
@@ -57,7 +59,12 @@
           autocomplete="off"
         >
 
-        <button class="clear-search" id="clearSearch" type="button" hidden>×</button>
+        <button
+          class="clear-search"
+          id="clearSearch"
+          type="button"
+          hidden
+        >×</button>
 
       </form>
 
@@ -84,7 +91,11 @@
 
         <div class="category-grid" id="categoryGrid">
 
-          <button class="category-card" data-category="all" type="button">
+          <button
+            class="category-card active"
+            data-category="all"
+            type="button"
+          >
             <span class="category-icon">▦</span>
             <span>كل الأقسام</span>
           </button>
@@ -130,6 +141,7 @@
           </button>
 
         </div>
+
       </section>
 
       <!-- الأماكن المميزة -->
@@ -188,7 +200,7 @@
 
     </main>
 
-    <!-- تذييل الموقع -->
+    <!-- تذييل الصفحة الرئيسية -->
     <footer class="footer">
 
       <div class="footer-brand">
@@ -206,16 +218,71 @@
 
   </div>
 
-  <!-- نافذة تفاصيل المكان -->
-  <dialog class="place-dialog" id="placeDialog">
+  <!-- =================================
+       صفحة تفاصيل المكان
+  ================================== -->
 
-    <button class="dialog-close" id="dialogClose" aria-label="إغلاق">
-      ×
-    </button>
+  <section
+    class="detail-view"
+    id="detailView"
+    hidden
+    aria-label="تفاصيل المكان"
+  >
 
-    <div class="dialog-content" id="dialogContent"></div>
+    <div class="detail-shell">
 
-  </dialog>
+      <!-- رأس صفحة التفاصيل -->
+      <header class="detail-nav">
+
+        <button
+          class="detail-back-button"
+          id="backToDirectory"
+          type="button"
+        >
+          <span>→</span>
+          العودة إلى الدليل
+        </button>
+
+        <a
+          href="#"
+          class="detail-brand"
+          id="detailHomeLink"
+          aria-label="العودة إلى البوابات"
+        >
+          <img src="logo.png" alt="">
+          <strong>البوابات</strong>
+        </a>
+
+      </header>
+
+      <!-- هنا تظهر تفاصيل المحل بواسطة app.js -->
+      <main
+        class="detail-page-content"
+        id="detailPageContent"
+        aria-live="polite"
+      >
+
+      </main>
+
+      <!-- تذييل صفحة التفاصيل -->
+      <footer class="detail-page-footer">
+
+        <div class="footer-brand">
+          <img src="logo.png" alt="">
+          <strong>البوابات</strong>
+        </div>
+
+        <p>دليلك إلى شهبا</p>
+
+        <span>
+          © <span id="detailYear"></span> البوابات
+        </span>
+
+      </footer>
+
+    </div>
+
+  </section>
 
   <!-- ملف وظائف الموقع -->
   <script src="app.js"></script>
